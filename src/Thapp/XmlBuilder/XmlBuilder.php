@@ -363,7 +363,7 @@ class XMLBuilder
 
             // set the default index key if there's no other way:
             if (is_int($key) || !$this->isValidNodeName($key)) {
-                $key = $this->indexKey;
+                $key = $hasAttributes ? $this->nodeValueKey : $this->indexKey;
             }
 
             if (is_array($value) && !is_int($key)) {
@@ -897,7 +897,6 @@ class XMLBuilder
      */
     protected function getTypeKey($value)
     {
-        //return is_string($value) ? 'text' : 'value';
         return $this->nodeValueKey;
     }
 }

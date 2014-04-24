@@ -182,7 +182,23 @@ class XmlBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertXmlStringEqualsXmlString($expected, $xml);
     }
 
+    /**
+     * @test
+     */
+    public function testValueForNodeWithAttributes()
+    {
+        $data = array('foo' => array(
+            '@attributes' => array(
+                'value' => 'test'),
+            'some-string'
+        ));
+        
+        $this->builder->load($data);
 
+        $expected = '<data><foo value="test">some-string</foo></data>';
+
+        $this->assertXmlStringEqualsXmlString($expected, $this->builder->createXML(true));
+    }
 
     /**
      * @test
