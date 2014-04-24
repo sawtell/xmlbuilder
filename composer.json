@@ -13,11 +13,15 @@
         "php":">=5.3.7"
     },
     "require-dev": {
-        "mockery/mockery":"dev-master"
+        "mockery/mockery":"dev-master",
+        "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
         "psr-0": {"Thapp": "src/"},
         "classmap":["tests/"],
         "files": ["src/includes/helper.php"]
+    },
+     "config": {
+        "bin-dir": "bin"
     }
 }
