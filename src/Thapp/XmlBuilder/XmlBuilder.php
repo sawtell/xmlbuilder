@@ -442,10 +442,10 @@ class XMLBuilder
 
             if (is_array($value)) {
                 foreach ($value as $attrKey => $attrValue) {
-                    $DOMNode->setAttribute($attrKey, $this->getValue($attrValue));
+                    $DOMNode->setAttribute($attrKey, $this->getValue($attrValue, true));
                 }
             } else {
-                $DOMNode->setAttribute($attrName, $this->getValue($value));
+                $DOMNode->setAttribute($attrName, $this->getValue($value, true));
             }
             return true;
         }
@@ -532,12 +532,12 @@ class XMLBuilder
         }
     }
 
-    protected function getValue($value)
+    protected function getValue($value, $isAttribute = false)
     {
         switch (true) {
         case is_bool($value):
             return $value ? 'true' : 'false';
-        case is_numeric($value):
+        case is_numeric($value) && !$isAttribute:
             return ctype_digit($value) ? intval($value) : floatval($value);
         case in_array($value, array('true', 'false', 'yes', 'no')):
             return ('false' === $value || 'no' === $value) ? false : true;

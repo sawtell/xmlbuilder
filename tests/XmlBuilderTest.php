@@ -448,4 +448,20 @@ class XmlBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertXmlStringEqualsXmlString($str, $this->builder->createXML(true));
     }
 
+    /**
+     * @test
+     */
+    public function testNumericAttribute()
+    {
+        $data = array('foo' => array(
+            '@attributes' => array(
+                'value' => '001')
+        ));
+        
+        $this->builder->load($data);
+
+        $expected = '<data><foo value="001"></foo></data>';
+
+        $this->assertXmlStringEqualsXmlString($expected, $this->builder->createXML(true));
+    }
 }
