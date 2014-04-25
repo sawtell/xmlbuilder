@@ -464,4 +464,18 @@ class XmlBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertXmlStringEqualsXmlString($expected, $this->builder->createXML(true));
     }
+
+    /**
+     * @test
+     */
+    public function testAddDocType()
+    {
+        $this->builder->load(array('foo' => 'bar'));
+        $this->builder->setDocType('wml', '-//WAPFORUM//DTD WML 1.3//EN', 'http://www.wapforum.org/DTD/wml13.dtd');
+        $xml = $this->builder->createXML(true);
+
+        $doctype = '<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.3//EN" "http://www.wapforum.org/DTD/wml13.dtd">';
+
+        $this->assertContains($doctype, $xml);
+    }
 }

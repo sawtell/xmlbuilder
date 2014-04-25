@@ -122,6 +122,13 @@ class XMLBuilder
     protected $encoding = 'UTF-8';
 
     /**
+     * doctype
+     *
+     * @var array
+     */
+    protected $doctype;
+
+    /**
      * Create new XmlBuilder.
      * @param string $name root element name
      * @param NormalizerInterface $normalizer
@@ -176,6 +183,15 @@ class XMLBuilder
     public function setEncoding($encoding)
     {
         $this->encoding = $encoding;
+    }
+
+    public function setDocType($qualifiedName, $publicId, $systemId)
+    {
+        $this->doctype = array(
+            'qualifiedName' => $qualifiedName,
+            'publicId' => $publicId,
+            'systemId' => $systemId
+        );
     }
 
     /**
@@ -271,6 +287,16 @@ class XMLBuilder
     public function createXML($asstring = false)
     {
         $this->dom = new DOMDocument('1.0', $this->encoding);
+
+        if ($this->doctype) {
+            $implementation = new \DOMImplementation;
+            $dtd = $implementation->createDocumentType(
+                    $this->doctype['qualifiedName'],
+                    $this->doctype['publicId'],
+                    $this->doctype['systemId']);
+            
+            $this->dom->insertBefore($dtd);
+        }
 
         $xmlRoot = $this->rootName;
         $root = $this->dom->createElement($xmlRoot);
