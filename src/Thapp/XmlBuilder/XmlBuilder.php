@@ -129,6 +129,13 @@ class XMLBuilder
     protected $doctype;
 
     /**
+     * renderTypeAttributes
+     *
+     * @var boolean
+     */
+    protected $renderTypeAttributes = true;
+
+    /**
      * Create new XmlBuilder.
      * @param string $name root element name
      * @param NormalizerInterface $normalizer
@@ -184,7 +191,15 @@ class XMLBuilder
     {
         $this->encoding = $encoding;
     }
-
+    /**
+     * setDocType
+     *
+     * @param string $qualifiedName
+     * @param string $publicId
+     * @param string $systemId
+     * @access public
+     * @return void
+     */
     public function setDocType($qualifiedName, $publicId, $systemId)
     {
         $this->doctype = array(
@@ -192,6 +207,17 @@ class XMLBuilder
             'publicId' => $publicId,
             'systemId' => $systemId
         );
+    }
+    /**
+     * setRenderTypeAttributes
+     *
+     * @param boolean $renderTypeAttributes
+     * @access public
+     * @return void
+     */
+    public function setRenderTypeAttributes($renderTypeAttributes)
+    {
+        $this->renderTypeAttributes = $renderTypeAttributes;
     }
 
     /**
@@ -542,7 +568,7 @@ class XMLBuilder
                 $this->buildXML($DOMNode, $value);
                 return true;
             case is_numeric($value):
-                if (is_string($value)) {
+                if (is_string($value) && $this->renderTypeAttributes) {
                     return $this->createTextNodeWithTypeAttribute($DOMNode, (string)$value, 'string');
                 }
                 return $this->createText($DOMNode, (string)$value);
