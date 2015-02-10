@@ -54,6 +54,8 @@ class Normalizer implements NormalizerInterface
      */
     protected $normalized = array();
 
+    protected $normalize = TRUE;
+
     /**
      * ensureArray
      *
@@ -331,7 +333,12 @@ class Normalizer implements NormalizerInterface
         $ovalue = $value;
 
         if (!isset($this->normalized[$value])) {
-            $this->normalized[$ovalue] = $this->normalizeString($value);;
+            if ($this->normalize) {
+                $this->normalized[$ovalue] = $this->normalizeString($value);;
+            }
+            else {
+                $this->normalized[$ovalue] = $ovalue;
+            }
         }
 
         return $this->normalized[$ovalue];
@@ -448,4 +455,11 @@ class Normalizer implements NormalizerInterface
             ($parent = get_parent_class($object)) ? $parent : get_class($object)),
         $this->ignoredObjects);
     }
+
+  /**
+   * @param boolean $normalize
+   */
+  public function setNormalize($normalize) {
+    $this->normalize = $normalize;
+  }
 }
